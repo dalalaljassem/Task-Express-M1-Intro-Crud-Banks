@@ -1,8 +1,11 @@
 
 let accounts = require("../../accounts");
+const Account = require("../../database/models/Account");
 
-exports.fetchAccounts = (req, res) => {
-  res.json(accounts);
+exports.fetchAccounts = async (req, res) => {
+  //this one line of code will bring me all the data 
+  const accounts = await Account.find();
+  res.status(200).json(accounts);
 };
 
 exports.createAccount = (req, res) => {
@@ -18,12 +21,12 @@ exports.updateAccount = (req, res) => {
   for(const key in req.body){
       account[key] = req.body[key];
   }
+
   res.json(account);
   }else{
       res.status(404).json({message:"Account doesnt exist"});
   }
     }
-
 
 exports.deleteAccount = (req, res) => {
   const account = accounts.find(_account=>_account.id === +req.params.accountId);
